@@ -10,7 +10,7 @@ const WorkflowGenerator = require('./workflow-generator');
 const JobQueue = require('./job-queue');
 
 const app = express();
-const PORT = process.env.SERVER_PORT || 3001;
+let PORT = parseInt(process.env.SERVER_PORT || '3001');
 
 // Middleware
 app.use(cors());
@@ -278,16 +278,20 @@ setInterval(() => {
   jobQueue.cleanOldJobs();
 }, 15 * 60 * 1000);
 
-// Start server
+// Start server with automatic port finding
 async function start() {
   await ensureDirectories();
 
-  app.listen(PORT, () => {
+  const server = app.listen(PORT, () => {
+    // Get the actual port that was assigned
+    const actualPort = server.address().port;
+    PORT = actualPort;
+
     console.log(`
 ╔═══════════════════════════════════════════════╗
 ║   Midjourney-ComfyUI Clone Server Started    ║
 ╠═══════════════════════════════════════════════╣
-║  Server:  http://localhost:${PORT}             ║
+║  Server:  http://localhost:${actualPort}${actualPort.toString().length < 5 ? ' '.repeat(5 - actualPort.toString().length) : ''}         ║
 ║  ComfyUI: ${comfyClient.baseUrl}            ║
 ╚═══════════════════════════════════════════════╝
     `);
@@ -301,6 +305,18 @@ async function start() {
         console.log('  Make sure ComfyUI is running at', comfyClient.baseUrl);
       }
     });
+  });
+
+  // Handle port in use error
+  server.on('error', (err) => {
+    if (err.code === 'EADDRINUSE') {
+      console.log(`Port ${PORT} is in use, trying port ${PORT + 1}...`);
+      PORT++;
+      server.close();
+      start();
+    } else {
+      throw err;
+    }
   });
 }
 

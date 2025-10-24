@@ -64,11 +64,20 @@ Before you begin, ensure you have the following installed:
    COMFYUI_PORT=8188
 
    # Server Configuration
+   # Preferred port for backend server (will auto-increment if occupied)
    SERVER_PORT=3001
+
+   # Frontend Configuration (for development only)
+   # Preferred port for Vite dev server (will auto-increment if occupied)
+   VITE_PORT=3000
+   # Backend API URL for proxy
+   VITE_API_URL=http://localhost:3001
 
    # Storage
    IMAGES_DIR=./output/images
    ```
+
+   **Note:** Both the backend and frontend servers use flexible port allocation. If the specified port is in use, they will automatically use the next available port.
 
 ## Usage
 
@@ -81,8 +90,10 @@ npm run dev
 ```
 
 This will start:
-- Backend server at `http://localhost:3001`
-- Frontend development server at `http://localhost:3000`
+- Backend server at `http://localhost:3001` (or next available port)
+- Frontend development server at `http://localhost:3000` (or next available port)
+
+The actual ports used will be displayed in the console output. If the default ports are occupied, the servers will automatically find and use the next available ports.
 
 ### Production Mode
 
@@ -96,7 +107,7 @@ This will start:
    npm start
    ```
 
-3. Access the application at `http://localhost:3001`
+3. Access the application at `http://localhost:3001` (or the port shown in console output)
 
 ## Creating Images
 
