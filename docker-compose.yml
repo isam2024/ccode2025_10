@@ -1,0 +1,29 @@
+version: '3.8'
+
+services:
+  midjourney-clone:
+    build: .
+    ports:
+      - "3001:3001"
+    environment:
+      - COMFYUI_HOST=host.docker.internal
+      - COMFYUI_PORT=8188
+      - SERVER_PORT=3001
+      - IMAGES_DIR=/app/output/images
+    volumes:
+      - ./output:/app/output
+    depends_on:
+      - comfyui
+    restart: unless-stopped
+
+  # Note: This is a placeholder. ComfyUI doesn't have an official Docker image.
+  # You'll need to run ComfyUI separately or create your own Dockerfile for it.
+  # See https://github.com/comfyanonymous/ComfyUI for installation instructions.
+
+  # comfyui:
+  #   image: comfyui:latest  # You need to build this yourself
+  #   ports:
+  #     - "8188:8188"
+  #   volumes:
+  #     - ./comfyui-data:/app
+  #   restart: unless-stopped
