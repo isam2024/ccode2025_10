@@ -4,6 +4,8 @@ const cors = require('cors');
 const path = require('path');
 const fs = require('fs').promises;
 const { v4: uuidv4 } = require('uuid');
+const session = require('express-session');
+const { configureAuth, ensureAuthenticated, passport } = require('./auth');
 
 const ComfyUIClient = require('./comfyui-client');
 const WorkflowGenerator = require('./workflow-generator');
@@ -16,6 +18,24 @@ let PORT = parseInt(process.env.SERVER_PORT || '3001');
 app.use(cors());
 app.use(express.json());
 app.use(express.static('public'));
+
+// Session middleware
+app.use(
+  session({
+    secret: process.env.SESSION_SECRET || 'your-secret-key',
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+      secure: process.env.NODE_ENV === 'production',
+      maxAge: 24 * 60 * 60 * 1000, // 24 hours
+    },
+  })
+);
+
+// Initialize Passport
+configureAuth();
+app.use(passport.initialize());
+app.use(passport.session());
 
 // Initialize services
 const comfyClient = new ComfyUIClient(
@@ -162,6 +182,68 @@ async function handleWebSocketMessage(jobId, message) {
     jobQueue.setFailed(jobId, error);
   }
 }
+
+// Authentication Routes
+
+/**
+ * Login page (pre-authentication)
+ */
+app.get('/', (req, res) => {
+  if (req.isAuthenticated()) {
+    return res.redirect('/dashboard');
+  }
+  res.sendFile(path.join(__dirname, '../public/login.html'));
+});
+
+/**
+ * Initiate Google OAuth
+ */
+app.get(
+  '/auth/google',
+  passport.authenticate('google', {
+    scope: ['profile', 'email'],
+  })
+);
+
+/**
+ * Google OAuth callback
+ */
+app.get(
+  '/auth/google/callback',
+  passport.authenticate('google', {
+    failureRedirect: '/',
+  }),
+  (req, res) => {
+    // Successful authentication
+    res.redirect('/dashboard');
+  }
+);
+
+/**
+ * Dashboard (post-authentication)
+ */
+app.get('/dashboard', ensureAuthenticated, (req, res) => {
+  res.sendFile(path.join(__dirname, '../public/dashboard.html'));
+});
+
+/**
+ * Get current user info
+ */
+app.get('/api/user', ensureAuthenticated, (req, res) => {
+  res.json(req.user);
+});
+
+/**
+ * Logout
+ */
+app.get('/auth/logout', (req, res) => {
+  req.logout((err) => {
+    if (err) {
+      return res.status(500).json({ error: 'Logout failed' });
+    }
+    res.redirect('/');
+  });
+});
 
 // API Routes
 
