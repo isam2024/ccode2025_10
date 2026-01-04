@@ -1,0 +1,996 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Generator UI Concepts</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #0a0a0a;
+            color: #fff;
+            min-height: 100vh;
+            padding: 40px;
+        }
+
+        h1 {
+            text-align: center;
+            font-weight: 300;
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            letter-spacing: -1px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 60px;
+            font-size: 1.1rem;
+        }
+
+        .concepts {
+            display: flex;
+            flex-direction: column;
+            gap: 80px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .concept {
+            background: #111;
+            border-radius: 24px;
+            overflow: hidden;
+            border: 1px solid #222;
+        }
+
+        .concept-header {
+            padding: 30px 40px;
+            border-bottom: 1px solid #222;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .concept-title {
+            font-size: 1.4rem;
+            font-weight: 500;
+        }
+
+        .concept-philosophy {
+            color: #888;
+            font-size: 0.9rem;
+            max-width: 500px;
+            text-align: right;
+        }
+
+        .concept-preview {
+            padding: 40px;
+            min-height: 500px;
+        }
+
+        /* ========== CONCEPT 1: THE VOID ========== */
+        .void-interface {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 450px;
+            background: radial-gradient(ellipse at center, #1a1a2e 0%, #0a0a0a 70%);
+            border-radius: 16px;
+            position: relative;
+        }
+
+        .void-prompt {
+            width: 70%;
+            max-width: 600px;
+            background: transparent;
+            border: none;
+            border-bottom: 2px solid #333;
+            padding: 20px 0;
+            font-size: 1.5rem;
+            color: #fff;
+            text-align: center;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        .void-prompt::placeholder {
+            color: #444;
+        }
+
+        .void-prompt:focus {
+            border-color: #7c3aed;
+        }
+
+        .void-hint {
+            position: absolute;
+            bottom: 40px;
+            color: #333;
+            font-size: 0.85rem;
+            letter-spacing: 2px;
+        }
+
+        .void-orb {
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #7c3aed 0%, #2563eb 100%);
+            filter: blur(40px);
+            opacity: 0.5;
+            animation: pulse 4s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 0.5; }
+            50% { transform: scale(1.2); opacity: 0.7; }
+        }
+
+        /* ========== CONCEPT 2: SPATIAL CANVAS ========== */
+        .canvas-interface {
+            height: 450px;
+            background: #0d0d0d;
+            border-radius: 16px;
+            position: relative;
+            overflow: hidden;
+            background-image:
+                radial-gradient(circle at 1px 1px, #222 1px, transparent 0);
+            background-size: 40px 40px;
+        }
+
+        .canvas-card {
+            position: absolute;
+            background: #1a1a1a;
+            border-radius: 12px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+            overflow: hidden;
+            border: 1px solid #333;
+        }
+
+        .canvas-card.main {
+            width: 280px;
+            height: 280px;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 10;
+        }
+
+        .canvas-card.variant-1 {
+            width: 160px;
+            height: 160px;
+            left: 15%;
+            top: 20%;
+            opacity: 0.7;
+            transform: rotate(-5deg);
+        }
+
+        .canvas-card.variant-2 {
+            width: 140px;
+            height: 140px;
+            right: 12%;
+            top: 25%;
+            opacity: 0.6;
+            transform: rotate(3deg);
+        }
+
+        .canvas-card.variant-3 {
+            width: 120px;
+            height: 120px;
+            left: 20%;
+            bottom: 15%;
+            opacity: 0.5;
+            transform: rotate(-2deg);
+        }
+
+        .canvas-card.variant-4 {
+            width: 130px;
+            height: 130px;
+            right: 18%;
+            bottom: 20%;
+            opacity: 0.5;
+            transform: rotate(4deg);
+        }
+
+        .canvas-image {
+            width: 100%;
+            height: calc(100% - 40px);
+            background: linear-gradient(135deg, #2d1f3d 0%, #1a2a3a 50%, #1f2d1f 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #444;
+            font-size: 0.8rem;
+        }
+
+        .canvas-card.main .canvas-image {
+            background: linear-gradient(135deg, #4c1d95 0%, #1e40af 50%, #065f46 100%);
+        }
+
+        .canvas-bar {
+            height: 40px;
+            background: #111;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 12px;
+        }
+
+        .canvas-dots {
+            display: flex;
+            gap: 4px;
+        }
+
+        .canvas-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #333;
+        }
+
+        .canvas-connector {
+            position: absolute;
+            border: 1px dashed #333;
+            z-index: 5;
+        }
+
+        .canvas-toolbar {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #1a1a1a;
+            border: 1px solid #333;
+            border-radius: 12px;
+            padding: 12px 20px;
+            display: flex;
+            gap: 20px;
+            z-index: 20;
+        }
+
+        .canvas-tool {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            background: #222;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #666;
+            font-size: 0.8rem;
+        }
+
+        .canvas-tool.active {
+            background: #7c3aed;
+            color: #fff;
+        }
+
+        /* ========== CONCEPT 3: TIMELINE / CONVERSATION ========== */
+        .timeline-interface {
+            height: 450px;
+            background: #0d0d0d;
+            border-radius: 16px;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .timeline-flow {
+            flex: 1;
+            padding: 30px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .timeline-block {
+            display: flex;
+            gap: 20px;
+            align-items: flex-start;
+        }
+
+        .timeline-block.user {
+            flex-direction: row-reverse;
+        }
+
+        .timeline-content {
+            max-width: 60%;
+            background: #1a1a1a;
+            border-radius: 16px;
+            padding: 16px 20px;
+            border: 1px solid #222;
+        }
+
+        .timeline-block.user .timeline-content {
+            background: #1a1a2e;
+            border-color: #2a2a4e;
+        }
+
+        .timeline-text {
+            color: #ccc;
+            line-height: 1.6;
+        }
+
+        .timeline-images {
+            display: flex;
+            gap: 12px;
+            margin-top: 16px;
+        }
+
+        .timeline-img {
+            width: 120px;
+            height: 120px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #4c1d95 0%, #1e40af 100%);
+        }
+
+        .timeline-img.selected {
+            outline: 3px solid #7c3aed;
+            outline-offset: 3px;
+        }
+
+        .timeline-input-area {
+            padding: 20px 30px;
+            background: #111;
+            border-top: 1px solid #222;
+            display: flex;
+            gap: 12px;
+        }
+
+        .timeline-input {
+            flex: 1;
+            background: #1a1a1a;
+            border: 1px solid #333;
+            border-radius: 12px;
+            padding: 16px 20px;
+            color: #fff;
+            font-size: 1rem;
+        }
+
+        .timeline-send {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            background: #7c3aed;
+            border: none;
+            color: #fff;
+            font-size: 1.2rem;
+            cursor: pointer;
+        }
+
+        /* ========== CONCEPT 4: DUAL PANEL ========== */
+        .dual-interface {
+            height: 450px;
+            background: #0d0d0d;
+            border-radius: 16px;
+            display: grid;
+            grid-template-columns: 350px 1fr;
+            overflow: hidden;
+        }
+
+        .dual-controls {
+            background: #111;
+            border-right: 1px solid #222;
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .dual-section-title {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #666;
+            margin-bottom: 12px;
+        }
+
+        .dual-textarea {
+            width: 100%;
+            height: 100px;
+            background: #0a0a0a;
+            border: 1px solid #222;
+            border-radius: 12px;
+            padding: 16px;
+            color: #fff;
+            resize: none;
+            font-family: inherit;
+        }
+
+        .dual-chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .dual-chip {
+            padding: 8px 14px;
+            background: #1a1a1a;
+            border: 1px solid #333;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            color: #888;
+        }
+
+        .dual-chip.selected {
+            background: #2a1a4a;
+            border-color: #7c3aed;
+            color: #fff;
+        }
+
+        .dual-slider-group {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .dual-slider-row {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .dual-slider-label {
+            width: 80px;
+            font-size: 0.85rem;
+            color: #888;
+        }
+
+        .dual-slider {
+            flex: 1;
+            height: 4px;
+            background: #333;
+            border-radius: 2px;
+            position: relative;
+        }
+
+        .dual-slider-fill {
+            height: 100%;
+            background: #7c3aed;
+            border-radius: 2px;
+        }
+
+        .dual-slider-knob {
+            position: absolute;
+            right: 0;
+            top: 50%;
+            transform: translate(50%, -50%);
+            width: 14px;
+            height: 14px;
+            background: #fff;
+            border-radius: 50%;
+        }
+
+        .dual-generate {
+            margin-top: auto;
+            padding: 16px;
+            background: linear-gradient(135deg, #7c3aed 0%, #2563eb 100%);
+            border: none;
+            border-radius: 12px;
+            color: #fff;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+        }
+
+        .dual-output {
+            padding: 24px;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+        }
+
+        .dual-result {
+            aspect-ratio: 1;
+            background: linear-gradient(135deg, #1a1a2e 0%, #0a0a1a 100%);
+            border-radius: 12px;
+            border: 1px solid #222;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .dual-result.generated {
+            background: linear-gradient(135deg, #4c1d95 0%, #1e40af 50%, #065f46 100%);
+        }
+
+        .dual-result-overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(0,0,0,0.6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+
+        .dual-result:hover .dual-result-overlay {
+            opacity: 1;
+        }
+
+        .dual-result-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .dual-result-btn {
+            padding: 8px 16px;
+            background: #fff;
+            border: none;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            color: #000;
+        }
+
+        /* ========== CONCEPT 5: RADIAL / ORBITAL ========== */
+        .orbital-interface {
+            height: 450px;
+            background: #0d0d0d;
+            border-radius: 16px;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .orbital-ring {
+            position: absolute;
+            border: 1px solid #1a1a1a;
+            border-radius: 50%;
+        }
+
+        .orbital-ring.r1 { width: 200px; height: 200px; }
+        .orbital-ring.r2 { width: 340px; height: 340px; }
+        .orbital-ring.r3 { width: 480px; height: 480px; }
+
+        .orbital-center {
+            width: 140px;
+            height: 140px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #7c3aed 0%, #2563eb 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10;
+            box-shadow: 0 0 80px rgba(124, 58, 237, 0.4);
+        }
+
+        .orbital-center-inner {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #4c1d95 0%, #1e40af 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 0.9rem;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .orbital-node {
+            position: absolute;
+            background: #1a1a1a;
+            border: 1px solid #333;
+            border-radius: 12px;
+            padding: 10px 16px;
+            font-size: 0.8rem;
+            color: #888;
+            white-space: nowrap;
+        }
+
+        .orbital-node.style-1 { top: 80px; left: 50%; transform: translateX(-50%); }
+        .orbital-node.style-2 { top: 150px; right: 80px; }
+        .orbital-node.style-3 { bottom: 150px; right: 100px; }
+        .orbital-node.style-4 { bottom: 80px; left: 50%; transform: translateX(-50%); }
+        .orbital-node.style-5 { bottom: 150px; left: 100px; }
+        .orbital-node.style-6 { top: 150px; left: 80px; }
+
+        .orbital-node.active {
+            background: #2a1a4a;
+            border-color: #7c3aed;
+            color: #fff;
+        }
+
+        .orbital-input {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60%;
+            background: #1a1a1a;
+            border: 1px solid #333;
+            border-radius: 30px;
+            padding: 16px 24px;
+            color: #fff;
+            font-size: 1rem;
+            text-align: center;
+        }
+
+        /* ========== CONCEPT 6: MINIMAL CARDS ========== */
+        .cards-interface {
+            height: 450px;
+            background: linear-gradient(180deg, #0d0d0d 0%, #0a0a0a 100%);
+            border-radius: 16px;
+            padding: 30px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .cards-prompt-area {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .cards-prompt {
+            background: transparent;
+            border: none;
+            font-size: 1.8rem;
+            color: #fff;
+            text-align: center;
+            width: 100%;
+            outline: none;
+            font-weight: 300;
+        }
+
+        .cards-prompt::placeholder {
+            color: #333;
+        }
+
+        .cards-divider {
+            width: 60px;
+            height: 2px;
+            background: #333;
+            margin: 0 auto;
+        }
+
+        .cards-grid {
+            flex: 1;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            margin-top: 30px;
+        }
+
+        .cards-item {
+            background: #111;
+            border-radius: 16px;
+            border: 1px solid #1a1a1a;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            transition: transform 0.2s, border-color 0.2s;
+        }
+
+        .cards-item:hover {
+            transform: translateY(-4px);
+            border-color: #333;
+        }
+
+        .cards-item-image {
+            flex: 1;
+            background: linear-gradient(135deg, #1a1a2e 0%, #0a0a1a 100%);
+            min-height: 180px;
+        }
+
+        .cards-item.generated .cards-item-image {
+            background: linear-gradient(135deg, #4c1d95 0%, #1e40af 50%, #065f46 100%);
+        }
+
+        .cards-item-footer {
+            padding: 12px 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .cards-item-num {
+            font-size: 0.8rem;
+            color: #444;
+        }
+
+        .cards-item-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .cards-item-action {
+            width: 24px;
+            height: 24px;
+            border-radius: 6px;
+            background: #1a1a1a;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #444;
+            font-size: 0.7rem;
+        }
+    </style>
+</head>
+<body>
+    <h1>Rethinking Image Generation UI</h1>
+    <p class="subtitle">Six explorations from first principles</p>
+
+    <div class="concepts">
+
+        <!-- CONCEPT 1: THE VOID -->
+        <div class="concept">
+            <div class="concept-header">
+                <div class="concept-title">01 — The Void</div>
+                <div class="concept-philosophy">Emptiness as invitation. The interface disappears, leaving only the thought and its manifestation.</div>
+            </div>
+            <div class="concept-preview">
+                <div class="void-interface">
+                    <div class="void-orb"></div>
+                    <input type="text" class="void-prompt" placeholder="describe what you see...">
+                    <div class="void-hint">ENTER TO MANIFEST</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- CONCEPT 2: SPATIAL CANVAS -->
+        <div class="concept">
+            <div class="concept-header">
+                <div class="concept-title">02 — Spatial Canvas</div>
+                <div class="concept-philosophy">Images as objects in space. Arrange, connect, and evolve ideas visually. Think with images.</div>
+            </div>
+            <div class="concept-preview">
+                <div class="canvas-interface">
+                    <div class="canvas-card variant-1">
+                        <div class="canvas-image">v1</div>
+                        <div class="canvas-bar">
+                            <div class="canvas-dots">
+                                <div class="canvas-dot"></div>
+                                <div class="canvas-dot"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="canvas-card variant-2">
+                        <div class="canvas-image">v2</div>
+                        <div class="canvas-bar">
+                            <div class="canvas-dots">
+                                <div class="canvas-dot"></div>
+                                <div class="canvas-dot"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="canvas-card main">
+                        <div class="canvas-image">PRIMARY</div>
+                        <div class="canvas-bar">
+                            <div class="canvas-dots">
+                                <div class="canvas-dot"></div>
+                                <div class="canvas-dot"></div>
+                                <div class="canvas-dot"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="canvas-card variant-3">
+                        <div class="canvas-image">v3</div>
+                        <div class="canvas-bar">
+                            <div class="canvas-dots">
+                                <div class="canvas-dot"></div>
+                                <div class="canvas-dot"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="canvas-card variant-4">
+                        <div class="canvas-image">v4</div>
+                        <div class="canvas-bar">
+                            <div class="canvas-dots">
+                                <div class="canvas-dot"></div>
+                                <div class="canvas-dot"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="canvas-toolbar">
+                        <div class="canvas-tool active">+</div>
+                        <div class="canvas-tool">↗</div>
+                        <div class="canvas-tool">⊕</div>
+                        <div class="canvas-tool">◐</div>
+                        <div class="canvas-tool">⟳</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- CONCEPT 3: TIMELINE / CONVERSATION -->
+        <div class="concept">
+            <div class="concept-header">
+                <div class="concept-title">03 — Dialogue</div>
+                <div class="concept-philosophy">Creation as conversation. Iterate naturally through language. The image evolves with each exchange.</div>
+            </div>
+            <div class="concept-preview">
+                <div class="timeline-interface">
+                    <div class="timeline-flow">
+                        <div class="timeline-block user">
+                            <div class="timeline-content">
+                                <div class="timeline-text">A serene Japanese garden at dawn, mist rising from a koi pond</div>
+                            </div>
+                        </div>
+                        <div class="timeline-block">
+                            <div class="timeline-content">
+                                <div class="timeline-text">Here are four interpretations:</div>
+                                <div class="timeline-images">
+                                    <div class="timeline-img"></div>
+                                    <div class="timeline-img selected"></div>
+                                    <div class="timeline-img"></div>
+                                    <div class="timeline-img"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="timeline-block user">
+                            <div class="timeline-content">
+                                <div class="timeline-text">I like the second one. Make the colors warmer and add a wooden bridge</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="timeline-input-area">
+                        <input type="text" class="timeline-input" placeholder="Describe or refine...">
+                        <button class="timeline-send">→</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- CONCEPT 4: DUAL PANEL -->
+        <div class="concept">
+            <div class="concept-header">
+                <div class="concept-title">04 — Studio</div>
+                <div class="concept-philosophy">Professional control meets creative freedom. All parameters visible, all outputs comparable.</div>
+            </div>
+            <div class="concept-preview">
+                <div class="dual-interface">
+                    <div class="dual-controls">
+                        <div>
+                            <div class="dual-section-title">Prompt</div>
+                            <textarea class="dual-textarea" placeholder="Describe your vision...">Ancient temple ruins overgrown with bioluminescent fungi</textarea>
+                        </div>
+                        <div>
+                            <div class="dual-section-title">Style</div>
+                            <div class="dual-chips">
+                                <div class="dual-chip">Photorealistic</div>
+                                <div class="dual-chip selected">Cinematic</div>
+                                <div class="dual-chip">Anime</div>
+                                <div class="dual-chip">Oil Paint</div>
+                                <div class="dual-chip">3D Render</div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="dual-section-title">Parameters</div>
+                            <div class="dual-slider-group">
+                                <div class="dual-slider-row">
+                                    <span class="dual-slider-label">Creativity</span>
+                                    <div class="dual-slider">
+                                        <div class="dual-slider-fill" style="width: 70%"></div>
+                                        <div class="dual-slider-knob" style="left: 70%"></div>
+                                    </div>
+                                </div>
+                                <div class="dual-slider-row">
+                                    <span class="dual-slider-label">Detail</span>
+                                    <div class="dual-slider">
+                                        <div class="dual-slider-fill" style="width: 85%"></div>
+                                        <div class="dual-slider-knob" style="left: 85%"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <button class="dual-generate">Generate 4 Variations</button>
+                    </div>
+                    <div class="dual-output">
+                        <div class="dual-result generated">
+                            <div class="dual-result-overlay">
+                                <div class="dual-result-actions">
+                                    <button class="dual-result-btn">Upscale</button>
+                                    <button class="dual-result-btn">Vary</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="dual-result generated"></div>
+                        <div class="dual-result generated"></div>
+                        <div class="dual-result generated"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- CONCEPT 5: RADIAL / ORBITAL -->
+        <div class="concept">
+            <div class="concept-header">
+                <div class="concept-title">05 — Orbital</div>
+                <div class="concept-philosophy">The image at the center of a universe of modifiers. Select attributes from orbiting options.</div>
+            </div>
+            <div class="concept-preview">
+                <div class="orbital-interface">
+                    <div class="orbital-ring r1"></div>
+                    <div class="orbital-ring r2"></div>
+                    <div class="orbital-ring r3"></div>
+
+                    <div class="orbital-center">
+                        <div class="orbital-center-inner">Your creation appears here</div>
+                    </div>
+
+                    <div class="orbital-node style-1">Cinematic Lighting</div>
+                    <div class="orbital-node style-2 active">8K Resolution</div>
+                    <div class="orbital-node style-3">Depth of Field</div>
+                    <div class="orbital-node style-4 active">Golden Hour</div>
+                    <div class="orbital-node style-5">Film Grain</div>
+                    <div class="orbital-node style-6 active">Wide Angle</div>
+
+                    <input type="text" class="orbital-input" placeholder="your core idea...">
+                </div>
+            </div>
+        </div>
+
+        <!-- CONCEPT 6: MINIMAL CARDS -->
+        <div class="concept">
+            <div class="concept-header">
+                <div class="concept-title">06 — Breath</div>
+                <div class="concept-philosophy">Maximum results, minimum interface. Type and watch possibilities unfold in a clean grid.</div>
+            </div>
+            <div class="concept-preview">
+                <div class="cards-interface">
+                    <div class="cards-prompt-area">
+                        <input type="text" class="cards-prompt" placeholder="imagine..." value="ethereal forest spirit emerging from morning fog">
+                        <div class="cards-divider"></div>
+                    </div>
+                    <div class="cards-grid">
+                        <div class="cards-item generated">
+                            <div class="cards-item-image"></div>
+                            <div class="cards-item-footer">
+                                <span class="cards-item-num">#1</span>
+                                <div class="cards-item-actions">
+                                    <div class="cards-item-action">↓</div>
+                                    <div class="cards-item-action">⟳</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="cards-item generated">
+                            <div class="cards-item-image"></div>
+                            <div class="cards-item-footer">
+                                <span class="cards-item-num">#2</span>
+                                <div class="cards-item-actions">
+                                    <div class="cards-item-action">↓</div>
+                                    <div class="cards-item-action">⟳</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="cards-item generated">
+                            <div class="cards-item-image"></div>
+                            <div class="cards-item-footer">
+                                <span class="cards-item-num">#3</span>
+                                <div class="cards-item-actions">
+                                    <div class="cards-item-action">↓</div>
+                                    <div class="cards-item-action">⟳</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="cards-item generated">
+                            <div class="cards-item-image"></div>
+                            <div class="cards-item-footer">
+                                <span class="cards-item-num">#4</span>
+                                <div class="cards-item-actions">
+                                    <div class="cards-item-action">↓</div>
+                                    <div class="cards-item-action">⟳</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</body>
+</html>
