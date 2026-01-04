@@ -1,0 +1,1033 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aesthetic Stumble — Personal Visual DNA</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #000;
+            color: #fff;
+            overflow-x: hidden;
+        }
+
+        /* ===== PHASE 1: SEED SELECTION ===== */
+        .phase {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 60px;
+            position: relative;
+        }
+
+        .phase-label {
+            position: absolute;
+            top: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.7rem;
+            letter-spacing: 4px;
+            color: #333;
+            text-transform: uppercase;
+        }
+
+        .seed-phase h1 {
+            font-size: 2.5rem;
+            font-weight: 300;
+            margin-bottom: 16px;
+            letter-spacing: -1px;
+        }
+
+        .seed-phase p {
+            color: #666;
+            margin-bottom: 50px;
+            font-size: 1.1rem;
+        }
+
+        .seed-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            max-width: 900px;
+        }
+
+        .seed-card {
+            aspect-ratio: 1;
+            border-radius: 16px;
+            background: #111;
+            border: 2px solid #222;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: 16px;
+        }
+
+        .seed-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            opacity: 0.6;
+            transition: opacity 0.3s;
+        }
+
+        .seed-card[data-seed="ethereal"]::before { background: linear-gradient(135deg, #1e1b4b 0%, #312e81 50%, #4c1d95 100%); }
+        .seed-card[data-seed="brutalist"]::before { background: linear-gradient(135deg, #1c1917 0%, #44403c 50%, #78716c 100%); }
+        .seed-card[data-seed="organic"]::before { background: linear-gradient(135deg, #052e16 0%, #14532d 50%, #166534 100%); }
+        .seed-card[data-seed="neon"]::before { background: linear-gradient(135deg, #0c0a09 0%, #be185d 50%, #6d28d9 100%); }
+        .seed-card[data-seed="ancient"]::before { background: linear-gradient(135deg, #1c1917 0%, #78350f 50%, #a16207 100%); }
+        .seed-card[data-seed="cosmic"]::before { background: linear-gradient(135deg, #020617 0%, #1e1b4b 50%, #0f172a 100%); }
+        .seed-card[data-seed="liminal"]::before { background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #0d0d0d 100%); }
+        .seed-card[data-seed="maximalist"]::before { background: linear-gradient(135deg, #7c2d12 0%, #b91c1c 30%, #c026d3 60%, #2563eb 100%); }
+
+        .seed-card:hover {
+            transform: translateY(-4px);
+            border-color: #444;
+        }
+
+        .seed-card.selected {
+            border-color: #7c3aed;
+            box-shadow: 0 0 30px rgba(124, 58, 237, 0.3);
+        }
+
+        .seed-card.selected::after {
+            content: '✓';
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            width: 24px;
+            height: 24px;
+            background: #7c3aed;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+        }
+
+        .seed-name {
+            position: relative;
+            z-index: 1;
+            font-size: 1rem;
+            font-weight: 500;
+        }
+
+        .seed-desc {
+            position: relative;
+            z-index: 1;
+            font-size: 0.75rem;
+            color: rgba(255,255,255,0.6);
+            margin-top: 4px;
+        }
+
+        .begin-btn {
+            margin-top: 50px;
+            padding: 18px 48px;
+            background: linear-gradient(135deg, #7c3aed 0%, #2563eb 100%);
+            border: none;
+            border-radius: 30px;
+            color: #fff;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            opacity: 0.3;
+            transition: all 0.3s;
+            pointer-events: none;
+        }
+
+        .begin-btn.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .begin-btn.active:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 40px rgba(124, 58, 237, 0.4);
+        }
+
+        /* ===== PHASE 2: STUMBLE ===== */
+        .stumble-phase {
+            background: #050505;
+            position: relative;
+        }
+
+        .stumble-container {
+            width: 100%;
+            max-width: 500px;
+            position: relative;
+        }
+
+        .stumble-card {
+            width: 100%;
+            aspect-ratio: 1;
+            border-radius: 24px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 40px 100px rgba(0,0,0,0.8);
+        }
+
+        .stumble-image {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            position: relative;
+        }
+
+        .stumble-image::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background:
+                radial-gradient(ellipse at 30% 40%, rgba(124, 58, 237, 0.2) 0%, transparent 50%),
+                radial-gradient(ellipse at 70% 60%, rgba(37, 99, 235, 0.2) 0%, transparent 50%);
+        }
+
+        .stumble-gen-id {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            font-family: monospace;
+            font-size: 0.75rem;
+            color: rgba(255,255,255,0.3);
+        }
+
+        .stumble-actions {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .stumble-btn {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            border: 2px solid;
+            background: transparent;
+            font-size: 1.8rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .stumble-btn.pass {
+            border-color: #333;
+            color: #666;
+        }
+
+        .stumble-btn.pass:hover {
+            border-color: #666;
+            color: #999;
+            transform: scale(1.1);
+        }
+
+        .stumble-btn.love {
+            border-color: #22c55e;
+            color: #22c55e;
+        }
+
+        .stumble-btn.love:hover {
+            background: rgba(34, 197, 94, 0.1);
+            transform: scale(1.15);
+            box-shadow: 0 0 40px rgba(34, 197, 94, 0.3);
+        }
+
+        .stumble-btn.obsessed {
+            border-color: #f43f5e;
+            color: #f43f5e;
+        }
+
+        .stumble-btn.obsessed:hover {
+            background: rgba(244, 63, 94, 0.1);
+            transform: scale(1.15);
+            box-shadow: 0 0 40px rgba(244, 63, 94, 0.3);
+        }
+
+        .stumble-progress {
+            position: absolute;
+            top: 40px;
+            right: 60px;
+            display: flex;
+            gap: 8px;
+        }
+
+        .stumble-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #222;
+        }
+
+        .stumble-dot.done {
+            background: #7c3aed;
+        }
+
+        .stumble-dot.current {
+            background: #fff;
+            box-shadow: 0 0 10px #fff;
+        }
+
+        .stumble-hint {
+            position: absolute;
+            bottom: 60px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: #333;
+            font-size: 0.8rem;
+            letter-spacing: 2px;
+        }
+
+        /* Profile building indicator */
+        .profile-building {
+            position: absolute;
+            left: 60px;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .profile-trait {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 0.75rem;
+            color: #444;
+        }
+
+        .profile-bar {
+            width: 80px;
+            height: 4px;
+            background: #1a1a1a;
+            border-radius: 2px;
+            overflow: hidden;
+        }
+
+        .profile-bar-fill {
+            height: 100%;
+            border-radius: 2px;
+            transition: width 0.5s ease-out;
+        }
+
+        .profile-trait:nth-child(1) .profile-bar-fill { background: #7c3aed; width: 65%; }
+        .profile-trait:nth-child(2) .profile-bar-fill { background: #2563eb; width: 40%; }
+        .profile-trait:nth-child(3) .profile-bar-fill { background: #22c55e; width: 80%; }
+        .profile-trait:nth-child(4) .profile-bar-fill { background: #f59e0b; width: 25%; }
+        .profile-trait:nth-child(5) .profile-bar-fill { background: #ec4899; width: 55%; }
+
+        /* ===== PHASE 3: YOUR DNA ===== */
+        .dna-phase {
+            background: radial-gradient(ellipse at center, #0a0a1a 0%, #000 70%);
+        }
+
+        .dna-phase h1 {
+            font-size: 2.5rem;
+            font-weight: 300;
+            margin-bottom: 16px;
+            letter-spacing: -1px;
+        }
+
+        .dna-phase .subtitle {
+            color: #666;
+            margin-bottom: 60px;
+        }
+
+        .dna-visualization {
+            display: flex;
+            gap: 80px;
+            align-items: center;
+        }
+
+        .dna-fingerprint {
+            width: 300px;
+            height: 300px;
+            position: relative;
+        }
+
+        .dna-ring {
+            position: absolute;
+            border-radius: 50%;
+            border: 2px solid;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            opacity: 0.6;
+        }
+
+        .dna-ring:nth-child(1) { width: 60px; height: 60px; border-color: #7c3aed; animation: rotate 20s linear infinite; }
+        .dna-ring:nth-child(2) { width: 100px; height: 100px; border-color: #2563eb; animation: rotate 25s linear infinite reverse; }
+        .dna-ring:nth-child(3) { width: 150px; height: 150px; border-color: #22c55e; border-style: dashed; animation: rotate 30s linear infinite; }
+        .dna-ring:nth-child(4) { width: 200px; height: 200px; border-color: #f59e0b; animation: rotate 35s linear infinite reverse; }
+        .dna-ring:nth-child(5) { width: 260px; height: 260px; border-color: #ec4899; border-style: dotted; animation: rotate 40s linear infinite; }
+
+        @keyframes rotate {
+            from { transform: translate(-50%, -50%) rotate(0deg); }
+            to { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+
+        .dna-center {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            width: 20px;
+            height: 20px;
+            background: #fff;
+            border-radius: 50%;
+            box-shadow: 0 0 30px #fff;
+        }
+
+        .dna-nodes {
+            position: absolute;
+            inset: 0;
+        }
+
+        .dna-node {
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .dna-traits {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .dna-trait {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .dna-trait-color {
+            width: 16px;
+            height: 16px;
+            border-radius: 4px;
+        }
+
+        .dna-trait-name {
+            width: 120px;
+            font-size: 0.9rem;
+            color: #888;
+        }
+
+        .dna-trait-bar {
+            width: 200px;
+            height: 8px;
+            background: #1a1a1a;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .dna-trait-fill {
+            height: 100%;
+            border-radius: 4px;
+        }
+
+        .dna-trait-value {
+            font-family: monospace;
+            font-size: 0.85rem;
+            color: #666;
+            width: 40px;
+            text-align: right;
+        }
+
+        /* ===== PHASE 4: PERSONALIZED GENERATION ===== */
+        .gen-phase {
+            background: #030303;
+        }
+
+        .gen-phase h1 {
+            font-size: 2rem;
+            font-weight: 300;
+            margin-bottom: 10px;
+        }
+
+        .gen-phase .subtitle {
+            color: #666;
+            margin-bottom: 50px;
+            font-size: 0.95rem;
+        }
+
+        .gen-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            max-width: 900px;
+        }
+
+        .gen-card {
+            aspect-ratio: 1;
+            border-radius: 16px;
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .gen-card:hover {
+            transform: scale(1.03);
+        }
+
+        .gen-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+        }
+
+        .gen-card:nth-child(1)::before { background: linear-gradient(135deg, #1e1b4b 0%, #312e81 50%, #1e3a8a 100%); }
+        .gen-card:nth-child(2)::before { background: linear-gradient(135deg, #0c4a6e 0%, #164e63 50%, #134e4a 100%); }
+        .gen-card:nth-child(3)::before { background: linear-gradient(135deg, #1e1b4b 0%, #4c1d95 50%, #6d28d9 100%); }
+        .gen-card:nth-child(4)::before { background: linear-gradient(135deg, #022c22 0%, #14532d 50%, #1e3a8a 100%); }
+        .gen-card:nth-child(5)::before { background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #312e81 100%); }
+        .gen-card:nth-child(6)::before { background: linear-gradient(135deg, #164e63 0%, #1e3a8a 50%, #312e81 100%); }
+
+        .gen-card-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, transparent 50%);
+            opacity: 0;
+            transition: opacity 0.2s;
+            display: flex;
+            align-items: flex-end;
+            padding: 16px;
+        }
+
+        .gen-card:hover .gen-card-overlay {
+            opacity: 1;
+        }
+
+        .gen-match {
+            font-size: 0.8rem;
+            color: #22c55e;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .gen-match::before {
+            content: '';
+            width: 8px;
+            height: 8px;
+            background: #22c55e;
+            border-radius: 50%;
+        }
+
+        .gen-footer {
+            margin-top: 40px;
+            display: flex;
+            gap: 20px;
+        }
+
+        .gen-btn {
+            padding: 14px 28px;
+            border-radius: 24px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .gen-btn.primary {
+            background: linear-gradient(135deg, #7c3aed 0%, #2563eb 100%);
+            border: none;
+            color: #fff;
+        }
+
+        .gen-btn.primary:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 30px rgba(124, 58, 237, 0.3);
+        }
+
+        .gen-btn.secondary {
+            background: transparent;
+            border: 1px solid #333;
+            color: #888;
+        }
+
+        .gen-btn.secondary:hover {
+            border-color: #666;
+            color: #fff;
+        }
+
+        /* ===== PROFILE COMPARISON ===== */
+        .compare-phase {
+            background: #000;
+            border-top: 1px solid #111;
+        }
+
+        .compare-phase h1 {
+            font-size: 2rem;
+            font-weight: 300;
+            margin-bottom: 10px;
+        }
+
+        .compare-phase .subtitle {
+            color: #666;
+            margin-bottom: 60px;
+        }
+
+        .profile-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 24px;
+            max-width: 1000px;
+        }
+
+        .profile-card {
+            background: #0a0a0a;
+            border: 1px solid #1a1a1a;
+            border-radius: 16px;
+            padding: 24px;
+            text-align: center;
+        }
+
+        .profile-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            margin: 0 auto 16px;
+            position: relative;
+        }
+
+        .profile-avatar-ring {
+            position: absolute;
+            inset: 0;
+            border-radius: 50%;
+            border: 3px solid;
+        }
+
+        .profile-card:nth-child(1) .profile-avatar-ring { border-color: #7c3aed; }
+        .profile-card:nth-child(2) .profile-avatar-ring { border-color: #f43f5e; }
+        .profile-card:nth-child(3) .profile-avatar-ring { border-color: #22c55e; }
+        .profile-card:nth-child(4) .profile-avatar-ring { border-color: #f59e0b; }
+
+        .profile-avatar-inner {
+            position: absolute;
+            inset: 8px;
+            border-radius: 50%;
+            background: #1a1a1a;
+        }
+
+        .profile-name {
+            font-size: 1rem;
+            margin-bottom: 4px;
+        }
+
+        .profile-handle {
+            font-size: 0.8rem;
+            color: #444;
+            margin-bottom: 16px;
+        }
+
+        .profile-signature {
+            font-size: 0.75rem;
+            color: #666;
+            margin-bottom: 16px;
+            font-style: italic;
+        }
+
+        .profile-compatibility {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 8px 16px;
+            background: #111;
+            border-radius: 20px;
+            font-size: 0.8rem;
+        }
+
+        .profile-compatibility-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+        }
+
+        .profile-card:nth-child(1) .profile-compatibility-dot { background: #22c55e; }
+        .profile-card:nth-child(2) .profile-compatibility-dot { background: #f59e0b; }
+        .profile-card:nth-child(3) .profile-compatibility-dot { background: #22c55e; }
+        .profile-card:nth-child(4) .profile-compatibility-dot { background: #ef4444; }
+
+        /* ===== FOOTER ===== */
+        .concept-footer {
+            padding: 100px 60px;
+            text-align: center;
+            background: #000;
+            border-top: 1px solid #111;
+        }
+
+        .concept-footer h2 {
+            font-size: 2rem;
+            font-weight: 300;
+            margin-bottom: 20px;
+        }
+
+        .concept-footer p {
+            color: #666;
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.8;
+        }
+
+        .key-concepts {
+            display: flex;
+            justify-content: center;
+            gap: 60px;
+            margin-top: 60px;
+        }
+
+        .key-concept {
+            text-align: center;
+        }
+
+        .key-concept-icon {
+            font-size: 2rem;
+            margin-bottom: 12px;
+        }
+
+        .key-concept-title {
+            font-size: 0.9rem;
+            margin-bottom: 6px;
+        }
+
+        .key-concept-desc {
+            font-size: 0.8rem;
+            color: #444;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- PHASE 1: SEED YOUR AESTHETIC -->
+    <div class="phase seed-phase">
+        <div class="phase-label">Phase 01 — Seed</div>
+        <h1>What draws you in?</h1>
+        <p>Select 2-3 aesthetic territories to seed your profile</p>
+
+        <div class="seed-grid">
+            <div class="seed-card selected" data-seed="ethereal">
+                <span class="seed-name">Ethereal</span>
+                <span class="seed-desc">Dreamlike, soft, otherworldly</span>
+            </div>
+            <div class="seed-card" data-seed="brutalist">
+                <span class="seed-name">Brutalist</span>
+                <span class="seed-desc">Raw, concrete, imposing</span>
+            </div>
+            <div class="seed-card" data-seed="organic">
+                <span class="seed-name">Organic</span>
+                <span class="seed-desc">Natural forms, growth, decay</span>
+            </div>
+            <div class="seed-card" data-seed="neon">
+                <span class="seed-name">Neon Noir</span>
+                <span class="seed-desc">Electric, urban, saturated</span>
+            </div>
+            <div class="seed-card selected" data-seed="ancient">
+                <span class="seed-name">Ancient</span>
+                <span class="seed-desc">Timeless, mythic, weathered</span>
+            </div>
+            <div class="seed-card" data-seed="cosmic">
+                <span class="seed-name">Cosmic</span>
+                <span class="seed-desc">Vast, stellar, infinite</span>
+            </div>
+            <div class="seed-card selected" data-seed="liminal">
+                <span class="seed-name">Liminal</span>
+                <span class="seed-desc">In-between spaces, eerie calm</span>
+            </div>
+            <div class="seed-card" data-seed="maximalist">
+                <span class="seed-name">Maximalist</span>
+                <span class="seed-desc">Dense, layered, overwhelming</span>
+            </div>
+        </div>
+
+        <button class="begin-btn active">Begin Stumbling</button>
+    </div>
+
+    <!-- PHASE 2: STUMBLE -->
+    <div class="phase stumble-phase">
+        <div class="phase-label">Phase 02 — Stumble</div>
+
+        <div class="stumble-progress">
+            <div class="stumble-dot done"></div>
+            <div class="stumble-dot done"></div>
+            <div class="stumble-dot current"></div>
+            <div class="stumble-dot"></div>
+            <div class="stumble-dot"></div>
+        </div>
+
+        <div class="profile-building">
+            <div class="profile-trait">
+                <div class="profile-bar"><div class="profile-bar-fill"></div></div>
+                <span>depth</span>
+            </div>
+            <div class="profile-trait">
+                <div class="profile-bar"><div class="profile-bar-fill"></div></div>
+                <span>mystery</span>
+            </div>
+            <div class="profile-trait">
+                <div class="profile-bar"><div class="profile-bar-fill"></div></div>
+                <span>texture</span>
+            </div>
+            <div class="profile-trait">
+                <div class="profile-bar"><div class="profile-bar-fill"></div></div>
+                <span>warmth</span>
+            </div>
+            <div class="profile-trait">
+                <div class="profile-bar"><div class="profile-bar-fill"></div></div>
+                <span>motion</span>
+            </div>
+        </div>
+
+        <div class="stumble-container">
+            <div class="stumble-card">
+                <div class="stumble-image"></div>
+                <span class="stumble-gen-id">gen_7x8k2m</span>
+            </div>
+
+            <div class="stumble-actions">
+                <button class="stumble-btn pass">→</button>
+                <button class="stumble-btn love">♡</button>
+                <button class="stumble-btn obsessed">★</button>
+            </div>
+        </div>
+
+        <div class="stumble-hint">SKIP • LIKE • OBSESSED</div>
+    </div>
+
+    <!-- PHASE 3: YOUR VISUAL DNA -->
+    <div class="phase dna-phase">
+        <div class="phase-label">Phase 03 — Your Visual DNA</div>
+        <h1>Profile Crystallized</h1>
+        <p class="subtitle">47 stumbles analyzed. Your aesthetic fingerprint:</p>
+
+        <div class="dna-visualization">
+            <div class="dna-fingerprint">
+                <div class="dna-ring"></div>
+                <div class="dna-ring"></div>
+                <div class="dna-ring"></div>
+                <div class="dna-ring"></div>
+                <div class="dna-ring"></div>
+                <div class="dna-center"></div>
+                <div class="dna-nodes">
+                    <div class="dna-node" style="top: 20%; left: 35%; background: #7c3aed;"></div>
+                    <div class="dna-node" style="top: 15%; left: 60%; background: #2563eb;"></div>
+                    <div class="dna-node" style="top: 40%; left: 85%; background: #22c55e;"></div>
+                    <div class="dna-node" style="top: 70%; left: 80%; background: #f59e0b;"></div>
+                    <div class="dna-node" style="top: 85%; left: 50%; background: #ec4899;"></div>
+                    <div class="dna-node" style="top: 65%; left: 20%; background: #7c3aed;"></div>
+                    <div class="dna-node" style="top: 35%; left: 15%; background: #2563eb;"></div>
+                </div>
+            </div>
+
+            <div class="dna-traits">
+                <div class="dna-trait">
+                    <div class="dna-trait-color" style="background: #7c3aed;"></div>
+                    <span class="dna-trait-name">Depth & Mystery</span>
+                    <div class="dna-trait-bar">
+                        <div class="dna-trait-fill" style="width: 87%; background: #7c3aed;"></div>
+                    </div>
+                    <span class="dna-trait-value">87%</span>
+                </div>
+                <div class="dna-trait">
+                    <div class="dna-trait-color" style="background: #2563eb;"></div>
+                    <span class="dna-trait-name">Cool Palette</span>
+                    <div class="dna-trait-bar">
+                        <div class="dna-trait-fill" style="width: 72%; background: #2563eb;"></div>
+                    </div>
+                    <span class="dna-trait-value">72%</span>
+                </div>
+                <div class="dna-trait">
+                    <div class="dna-trait-color" style="background: #22c55e;"></div>
+                    <span class="dna-trait-name">Texture Detail</span>
+                    <div class="dna-trait-bar">
+                        <div class="dna-trait-fill" style="width: 91%; background: #22c55e;"></div>
+                    </div>
+                    <span class="dna-trait-value">91%</span>
+                </div>
+                <div class="dna-trait">
+                    <div class="dna-trait-color" style="background: #f59e0b;"></div>
+                    <span class="dna-trait-name">Negative Space</span>
+                    <div class="dna-trait-bar">
+                        <div class="dna-trait-fill" style="width: 45%; background: #f59e0b;"></div>
+                    </div>
+                    <span class="dna-trait-value">45%</span>
+                </div>
+                <div class="dna-trait">
+                    <div class="dna-trait-color" style="background: #ec4899;"></div>
+                    <span class="dna-trait-name">Implied Motion</span>
+                    <div class="dna-trait-bar">
+                        <div class="dna-trait-fill" style="width: 33%; background: #ec4899;"></div>
+                    </div>
+                    <span class="dna-trait-value">33%</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- PHASE 4: PERSONALIZED GENERATION -->
+    <div class="phase gen-phase">
+        <div class="phase-label">Phase 04 — Generate</div>
+        <h1>Made For You</h1>
+        <p class="subtitle">Images generated from your visual DNA — no prompt needed</p>
+
+        <div class="gen-grid">
+            <div class="gen-card">
+                <div class="gen-card-overlay">
+                    <span class="gen-match">94% match</span>
+                </div>
+            </div>
+            <div class="gen-card">
+                <div class="gen-card-overlay">
+                    <span class="gen-match">89% match</span>
+                </div>
+            </div>
+            <div class="gen-card">
+                <div class="gen-card-overlay">
+                    <span class="gen-match">91% match</span>
+                </div>
+            </div>
+            <div class="gen-card">
+                <div class="gen-card-overlay">
+                    <span class="gen-match">86% match</span>
+                </div>
+            </div>
+            <div class="gen-card">
+                <div class="gen-card-overlay">
+                    <span class="gen-match">93% match</span>
+                </div>
+            </div>
+            <div class="gen-card">
+                <div class="gen-card-overlay">
+                    <span class="gen-match">88% match</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="gen-footer">
+            <button class="gen-btn primary">✦ Generate More</button>
+            <button class="gen-btn secondary">Refine Profile</button>
+            <button class="gen-btn secondary">Export DNA</button>
+        </div>
+    </div>
+
+    <!-- PHASE 5: COMPARE PROFILES -->
+    <div class="phase compare-phase">
+        <div class="phase-label">Phase 05 — Community</div>
+        <h1>Aesthetic Neighbors</h1>
+        <p class="subtitle">People with similar visual DNA</p>
+
+        <div class="profile-grid">
+            <div class="profile-card">
+                <div class="profile-avatar">
+                    <div class="profile-avatar-ring"></div>
+                    <div class="profile-avatar-inner"></div>
+                </div>
+                <div class="profile-name">Marina</div>
+                <div class="profile-handle">@deep_liminal</div>
+                <div class="profile-signature">"threshold spaces, twilight hours"</div>
+                <div class="profile-compatibility">
+                    <span class="profile-compatibility-dot"></span>
+                    <span>92% aligned</span>
+                </div>
+            </div>
+            <div class="profile-card">
+                <div class="profile-avatar">
+                    <div class="profile-avatar-ring"></div>
+                    <div class="profile-avatar-inner"></div>
+                </div>
+                <div class="profile-name">Theo</div>
+                <div class="profile-handle">@texture_theory</div>
+                <div class="profile-signature">"surface tension, material memory"</div>
+                <div class="profile-compatibility">
+                    <span class="profile-compatibility-dot"></span>
+                    <span>78% aligned</span>
+                </div>
+            </div>
+            <div class="profile-card">
+                <div class="profile-avatar">
+                    <div class="profile-avatar-ring"></div>
+                    <div class="profile-avatar-inner"></div>
+                </div>
+                <div class="profile-name">Yuki</div>
+                <div class="profile-handle">@void_gardener</div>
+                <div class="profile-signature">"empty rooms, full silence"</div>
+                <div class="profile-compatibility">
+                    <span class="profile-compatibility-dot"></span>
+                    <span>89% aligned</span>
+                </div>
+            </div>
+            <div class="profile-card">
+                <div class="profile-avatar">
+                    <div class="profile-avatar-ring"></div>
+                    <div class="profile-avatar-inner"></div>
+                </div>
+                <div class="profile-name">Kai</div>
+                <div class="profile-handle">@neon_brutalism</div>
+                <div class="profile-signature">"concrete meets cathode"</div>
+                <div class="profile-compatibility">
+                    <span class="profile-compatibility-dot"></span>
+                    <span>34% aligned</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <div class="concept-footer">
+        <h2>Your taste is the model.</h2>
+        <p>No prompts to perfect. No keywords to memorize. Just react, and watch as the system learns to see through your eyes. Every stumble refines the profile. Every profile is unique. Every generation is yours.</p>
+
+        <div class="key-concepts">
+            <div class="key-concept">
+                <div class="key-concept-icon">◉</div>
+                <div class="key-concept-title">Stumble</div>
+                <div class="key-concept-desc">Serendipitous discovery</div>
+            </div>
+            <div class="key-concept">
+                <div class="key-concept-icon">◐</div>
+                <div class="key-concept-title">React</div>
+                <div class="key-concept-desc">Gut-level feedback</div>
+            </div>
+            <div class="key-concept">
+                <div class="key-concept-icon">✧</div>
+                <div class="key-concept-title">Crystallize</div>
+                <div class="key-concept-desc">Profile emerges</div>
+            </div>
+            <div class="key-concept">
+                <div class="key-concept-icon">∞</div>
+                <div class="key-concept-title">Generate</div>
+                <div class="key-concept-desc">Infinite personalization</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Seed card selection
+        document.querySelectorAll('.seed-card').forEach(card => {
+            card.addEventListener('click', () => {
+                card.classList.toggle('selected');
+                const selected = document.querySelectorAll('.seed-card.selected').length;
+                document.querySelector('.begin-btn').classList.toggle('active', selected >= 2);
+            });
+        });
+    </script>
+
+</body>
+</html>
