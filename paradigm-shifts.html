@@ -1,0 +1,1108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Paradigm Shifts in Image Generation</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Georgia', serif;
+            background: #000;
+            color: #fff;
+            line-height: 1.7;
+        }
+
+        .intro {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 60px;
+            background: radial-gradient(ellipse at center, #0a0a0a 0%, #000 70%);
+        }
+
+        .intro h1 {
+            font-size: 3rem;
+            font-weight: 300;
+            letter-spacing: -2px;
+            margin-bottom: 40px;
+        }
+
+        .intro p {
+            max-width: 600px;
+            color: #666;
+            font-size: 1.2rem;
+        }
+
+        .intro .old-new {
+            display: flex;
+            gap: 80px;
+            margin-top: 60px;
+            font-size: 1rem;
+        }
+
+        .intro .paradigm-label {
+            color: #333;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            font-size: 0.7rem;
+            margin-bottom: 12px;
+            font-family: sans-serif;
+        }
+
+        .intro .old { color: #444; }
+        .intro .new { color: #7c3aed; }
+
+        .paradigm {
+            min-height: 100vh;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            border-top: 1px solid #111;
+        }
+
+        .paradigm-text {
+            padding: 80px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .paradigm-number {
+            font-family: sans-serif;
+            font-size: 0.75rem;
+            color: #333;
+            letter-spacing: 3px;
+            margin-bottom: 20px;
+        }
+
+        .paradigm-title {
+            font-size: 2.5rem;
+            font-weight: 300;
+            margin-bottom: 30px;
+            letter-spacing: -1px;
+        }
+
+        .paradigm-shift {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 30px;
+            font-family: sans-serif;
+            font-size: 0.9rem;
+        }
+
+        .paradigm-from {
+            color: #444;
+            text-decoration: line-through;
+        }
+
+        .paradigm-arrow {
+            color: #333;
+        }
+
+        .paradigm-to {
+            color: #7c3aed;
+        }
+
+        .paradigm-desc {
+            color: #888;
+            max-width: 500px;
+        }
+
+        .paradigm-visual {
+            background: #0a0a0a;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px;
+        }
+
+        /* ===== PARADIGM 1: SUBTRACTION ===== */
+        .subtraction-demo {
+            width: 100%;
+            max-width: 400px;
+            aspect-ratio: 1;
+            position: relative;
+        }
+
+        .subtract-layer {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        .subtract-cell {
+            width: 10%;
+            height: 10%;
+            transition: opacity 0.3s;
+        }
+
+        .subtract-cell.removed {
+            opacity: 0.05;
+        }
+
+        .subtract-controls {
+            position: absolute;
+            bottom: -60px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 12px;
+        }
+
+        .subtract-btn {
+            padding: 10px 20px;
+            background: #111;
+            border: 1px solid #333;
+            color: #888;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            font-family: sans-serif;
+        }
+
+        .subtract-btn:hover {
+            border-color: #7c3aed;
+            color: #fff;
+        }
+
+        /* ===== PARADIGM 2: BREEDING ===== */
+        .breeding-demo {
+            width: 100%;
+            max-width: 450px;
+        }
+
+        .breeding-parents {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 30px;
+        }
+
+        .breeding-parent {
+            width: 120px;
+            height: 120px;
+            border-radius: 12px;
+            position: relative;
+        }
+
+        .breeding-parent.a {
+            background: linear-gradient(135deg, #7c3aed 0%, #2563eb 100%);
+        }
+
+        .breeding-parent.b {
+            background: linear-gradient(135deg, #dc2626 0%, #ea580c 100%);
+        }
+
+        .breeding-connector {
+            position: absolute;
+            top: 50%;
+            left: 140px;
+            right: 140px;
+            height: 2px;
+            background: linear-gradient(90deg, #7c3aed, #666, #dc2626);
+        }
+
+        .breeding-heart {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 1.5rem;
+        }
+
+        .breeding-offspring {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            position: relative;
+        }
+
+        .breeding-offspring::before {
+            content: '';
+            position: absolute;
+            top: -30px;
+            left: 50%;
+            width: 2px;
+            height: 30px;
+            background: #333;
+        }
+
+        .breeding-child {
+            width: 80px;
+            height: 80px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .breeding-child:hover {
+            transform: scale(1.1);
+        }
+
+        .breeding-child:nth-child(1) { background: linear-gradient(135deg, #9333ea 0%, #3b82f6 100%); }
+        .breeding-child:nth-child(2) { background: linear-gradient(135deg, #a855f7 0%, #f97316 100%); }
+        .breeding-child:nth-child(3) { background: linear-gradient(135deg, #6366f1 0%, #ef4444 100%); }
+        .breeding-child:nth-child(4) { background: linear-gradient(135deg, #8b5cf6 0%, #f59e0b 100%); }
+
+        .breeding-label {
+            text-align: center;
+            margin-top: 20px;
+            font-family: sans-serif;
+            font-size: 0.75rem;
+            color: #444;
+            letter-spacing: 2px;
+        }
+
+        /* ===== PARADIGM 3: RESONANCE ===== */
+        .resonance-demo {
+            text-align: center;
+        }
+
+        .resonance-image {
+            width: 200px;
+            height: 200px;
+            border-radius: 16px;
+            background: linear-gradient(135deg, #1e3a5f 0%, #0f172a 100%);
+            margin: 0 auto 40px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+        }
+
+        .resonance-response {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+        }
+
+        .resonance-btn {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            border: 2px solid #222;
+            background: transparent;
+            font-size: 2rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .resonance-btn.pull {
+            border-color: #22c55e;
+            color: #22c55e;
+        }
+
+        .resonance-btn.push {
+            border-color: #ef4444;
+            color: #ef4444;
+        }
+
+        .resonance-btn:hover {
+            transform: scale(1.1);
+        }
+
+        .resonance-text {
+            margin-top: 30px;
+            font-family: sans-serif;
+            font-size: 0.8rem;
+            color: #444;
+        }
+
+        /* ===== PARADIGM 4: DIMENSIONS ===== */
+        .dimensions-demo {
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .dimension-axis {
+            display: flex;
+            align-items: center;
+            margin-bottom: 30px;
+            font-family: sans-serif;
+            font-size: 0.85rem;
+        }
+
+        .dimension-label {
+            width: 100px;
+            color: #666;
+            text-align: right;
+            padding-right: 20px;
+        }
+
+        .dimension-track {
+            flex: 1;
+            height: 8px;
+            background: linear-gradient(90deg, var(--from), var(--to));
+            border-radius: 4px;
+            position: relative;
+        }
+
+        .dimension-knob {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: #fff;
+            border-radius: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+            cursor: grab;
+        }
+
+        .dimension-label-end {
+            width: 100px;
+            color: #666;
+            padding-left: 20px;
+        }
+
+        .dimension-result {
+            width: 100%;
+            height: 200px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #1a0a2e 0%, #0a2a1a 50%, #2a1a0a 100%);
+            margin-top: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #333;
+            font-family: sans-serif;
+            font-size: 0.8rem;
+        }
+
+        /* ===== PARADIGM 5: GRAMMAR ===== */
+        .grammar-demo {
+            width: 100%;
+            max-width: 450px;
+        }
+
+        .grammar-sentence {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            justify-content: center;
+            margin-bottom: 40px;
+        }
+
+        .grammar-word {
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-family: sans-serif;
+            font-size: 0.9rem;
+        }
+
+        .grammar-word.noun {
+            background: #1e3a5f;
+            color: #60a5fa;
+            border: 1px solid #2563eb;
+        }
+
+        .grammar-word.verb {
+            background: #3f1f0a;
+            color: #fb923c;
+            border: 1px solid #ea580c;
+        }
+
+        .grammar-word.adj {
+            background: #1f3f1f;
+            color: #4ade80;
+            border: 1px solid #22c55e;
+        }
+
+        .grammar-word.mood {
+            background: #3f1f3f;
+            color: #e879f9;
+            border: 1px solid #d946ef;
+        }
+
+        .grammar-legend {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            font-family: sans-serif;
+            font-size: 0.75rem;
+            color: #444;
+        }
+
+        .grammar-legend span {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .grammar-legend-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 3px;
+        }
+
+        .grammar-result {
+            width: 100%;
+            height: 180px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #1e3a5f 0%, #3f1f0a 50%, #1f3f1f 100%);
+            margin-top: 30px;
+        }
+
+        /* ===== PARADIGM 6: LIVING ===== */
+        .living-demo {
+            text-align: center;
+        }
+
+        .living-image {
+            width: 250px;
+            height: 250px;
+            border-radius: 16px;
+            background: linear-gradient(135deg, #2d1f3d 0%, #1a2a3a 50%, #1f2d1f 100%);
+            margin: 0 auto;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .living-patina {
+            position: absolute;
+            inset: 0;
+            background:
+                radial-gradient(ellipse at 20% 30%, rgba(139, 92, 246, 0.1) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 70%, rgba(234, 179, 8, 0.08) 0%, transparent 50%);
+        }
+
+        .living-stats {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            margin-top: 30px;
+            font-family: sans-serif;
+            font-size: 0.8rem;
+            color: #666;
+        }
+
+        .living-stat-value {
+            color: #888;
+            font-size: 1.2rem;
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .living-age {
+            margin-top: 20px;
+            font-family: sans-serif;
+            font-size: 0.75rem;
+            color: #333;
+            letter-spacing: 1px;
+        }
+
+        /* ===== PARADIGM 7: DIALOGUE ===== */
+        .dialogue-demo {
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .dialogue-image {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #4c1d95 0%, #1e40af 100%);
+            margin: 0 auto 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 0 60px rgba(124, 58, 237, 0.3);
+        }
+
+        .dialogue-speech {
+            background: #111;
+            border: 1px solid #222;
+            border-radius: 16px;
+            padding: 20px;
+            position: relative;
+            margin-bottom: 20px;
+        }
+
+        .dialogue-speech::before {
+            content: '';
+            position: absolute;
+            top: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            border-left: 10px solid transparent;
+            border-right: 10px solid transparent;
+            border-bottom: 10px solid #222;
+        }
+
+        .dialogue-speech p {
+            font-style: italic;
+            color: #888;
+            text-align: center;
+        }
+
+        .dialogue-response {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+        }
+
+        .dialogue-option {
+            padding: 10px 20px;
+            background: #1a1a1a;
+            border: 1px solid #333;
+            border-radius: 20px;
+            color: #888;
+            font-family: sans-serif;
+            font-size: 0.85rem;
+            cursor: pointer;
+        }
+
+        .dialogue-option:hover {
+            border-color: #7c3aed;
+            color: #fff;
+        }
+
+        /* ===== PARADIGM 8: SENSORY ===== */
+        .sensory-demo {
+            text-align: center;
+        }
+
+        .sensory-inputs {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .sensory-input {
+            text-align: center;
+        }
+
+        .sensory-circle {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            border: 2px solid #333;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            margin-bottom: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .sensory-circle:hover {
+            border-color: #7c3aed;
+            box-shadow: 0 0 30px rgba(124, 58, 237, 0.3);
+        }
+
+        .sensory-circle.active {
+            border-color: #7c3aed;
+            background: rgba(124, 58, 237, 0.1);
+        }
+
+        .sensory-label {
+            font-family: sans-serif;
+            font-size: 0.75rem;
+            color: #666;
+            letter-spacing: 1px;
+        }
+
+        .sensory-wave {
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 3px;
+        }
+
+        .sensory-bar {
+            width: 4px;
+            background: #7c3aed;
+            border-radius: 2px;
+            animation: wave 1s ease-in-out infinite;
+        }
+
+        .sensory-bar:nth-child(1) { height: 20px; animation-delay: 0s; }
+        .sensory-bar:nth-child(2) { height: 35px; animation-delay: 0.1s; }
+        .sensory-bar:nth-child(3) { height: 50px; animation-delay: 0.2s; }
+        .sensory-bar:nth-child(4) { height: 30px; animation-delay: 0.3s; }
+        .sensory-bar:nth-child(5) { height: 45px; animation-delay: 0.4s; }
+        .sensory-bar:nth-child(6) { height: 25px; animation-delay: 0.5s; }
+        .sensory-bar:nth-child(7) { height: 40px; animation-delay: 0.6s; }
+
+        @keyframes wave {
+            0%, 100% { transform: scaleY(1); }
+            50% { transform: scaleY(0.5); }
+        }
+
+        .sensory-arrow {
+            font-size: 2rem;
+            color: #333;
+            margin: 20px 0;
+        }
+
+        .sensory-result {
+            width: 180px;
+            height: 180px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #4c1d95 0%, #7c3aed 50%, #a855f7 100%);
+            margin: 0 auto;
+            box-shadow: 0 20px 60px rgba(124, 58, 237, 0.3);
+        }
+
+        /* ===== PARADIGM 9: CONSTRAINT ===== */
+        .constraint-demo {
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .constraint-rules {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            margin-bottom: 30px;
+        }
+
+        .constraint-rule {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 14px 18px;
+            background: #111;
+            border: 1px solid #222;
+            border-radius: 10px;
+        }
+
+        .constraint-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            background: #1a1a1a;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+        }
+
+        .constraint-text {
+            flex: 1;
+            font-family: sans-serif;
+            font-size: 0.9rem;
+            color: #888;
+        }
+
+        .constraint-toggle {
+            width: 40px;
+            height: 22px;
+            background: #333;
+            border-radius: 11px;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .constraint-toggle.active {
+            background: #7c3aed;
+        }
+
+        .constraint-toggle::after {
+            content: '';
+            position: absolute;
+            width: 18px;
+            height: 18px;
+            background: #fff;
+            border-radius: 50%;
+            top: 2px;
+            left: 2px;
+            transition: left 0.2s;
+        }
+
+        .constraint-toggle.active::after {
+            left: 20px;
+        }
+
+        .constraint-result {
+            width: 100%;
+            height: 180px;
+            border-radius: 12px;
+            border: 2px dashed #333;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: sans-serif;
+            font-size: 0.85rem;
+            color: #333;
+        }
+
+        /* Footer */
+        .footer {
+            padding: 100px 60px;
+            text-align: center;
+            border-top: 1px solid #111;
+        }
+
+        .footer h2 {
+            font-weight: 300;
+            font-size: 2rem;
+            margin-bottom: 30px;
+        }
+
+        .footer p {
+            color: #666;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="intro">
+        <h1>What if we forgot everything?</h1>
+        <p>Before tags, we saved bookmarks in folders. Before playlists, we burned CDs. Before feeds, we visited websites. Each paradigm shift didn't improve the old model—it replaced the mental model entirely.</p>
+        <div class="old-new">
+            <div class="old">
+                <div class="paradigm-label">Current Assumption</div>
+                <div>Text prompt → Image output</div>
+            </div>
+            <div class="new">
+                <div class="paradigm-label">What else?</div>
+                <div>Nine paradigm shifts →</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- PARADIGM 1: SUBTRACTION -->
+    <div class="paradigm">
+        <div class="paradigm-text">
+            <div class="paradigm-number">PARADIGM 01</div>
+            <h2 class="paradigm-title">Subtraction</h2>
+            <div class="paradigm-shift">
+                <span class="paradigm-from">Describe what you want</span>
+                <span class="paradigm-arrow">→</span>
+                <span class="paradigm-to">Remove what you don't</span>
+            </div>
+            <p class="paradigm-desc">Start with infinite possibility—noise, chaos, everything. Sculpt by exclusion. "Not blue. Not geometric. Not calm." What remains after carving away is your image. Creation through negation. Like Michelangelo removing marble to find David.</p>
+        </div>
+        <div class="paradigm-visual">
+            <div class="subtraction-demo">
+                <div class="subtract-layer" id="subtractGrid"></div>
+                <div class="subtract-controls">
+                    <button class="subtract-btn" onclick="removeTag('blue')">− blue</button>
+                    <button class="subtract-btn" onclick="removeTag('organic')">− organic</button>
+                    <button class="subtract-btn" onclick="removeTag('busy')">− busy</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- PARADIGM 2: BREEDING -->
+    <div class="paradigm">
+        <div class="paradigm-text">
+            <div class="paradigm-number">PARADIGM 02</div>
+            <h2 class="paradigm-title">Breeding</h2>
+            <div class="paradigm-shift">
+                <span class="paradigm-from">Generate from prompt</span>
+                <span class="paradigm-arrow">→</span>
+                <span class="paradigm-to">Evolve through generations</span>
+            </div>
+            <p class="paradigm-desc">Images mate. Select two parents, produce offspring. Pick your favorites, breed again. Build family trees of visual evolution. You're not describing—you're selecting. Natural selection for aesthetics. The image evolves; you curate the gene pool.</p>
+        </div>
+        <div class="paradigm-visual">
+            <div class="breeding-demo">
+                <div class="breeding-parents">
+                    <div class="breeding-parent a"></div>
+                    <div class="breeding-connector">
+                        <span class="breeding-heart">×</span>
+                    </div>
+                    <div class="breeding-parent b"></div>
+                </div>
+                <div class="breeding-label">OFFSPRING — SELECT TO BREED AGAIN</div>
+                <div class="breeding-offspring">
+                    <div class="breeding-child"></div>
+                    <div class="breeding-child"></div>
+                    <div class="breeding-child"></div>
+                    <div class="breeding-child"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- PARADIGM 3: RESONANCE -->
+    <div class="paradigm">
+        <div class="paradigm-text">
+            <div class="paradigm-number">PARADIGM 03</div>
+            <h2 class="paradigm-title">Resonance</h2>
+            <div class="paradigm-shift">
+                <span class="paradigm-from">Articulate your vision</span>
+                <span class="paradigm-arrow">→</span>
+                <span class="paradigm-to">React from your gut</span>
+            </div>
+            <p class="paradigm-desc">No words. No prompts. You're shown random images and you simply respond: pull closer or push away. Yes or no. The system learns your aesthetic through pure emotional response. Like training a neural network with your instincts. You don't need to explain beauty—just feel it.</p>
+        </div>
+        <div class="paradigm-visual">
+            <div class="resonance-demo">
+                <div class="resonance-image"></div>
+                <div class="resonance-response">
+                    <button class="resonance-btn push">✕</button>
+                    <button class="resonance-btn pull">♡</button>
+                </div>
+                <div class="resonance-text">347 responses → your aesthetic model emerges</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- PARADIGM 4: DIMENSIONS -->
+    <div class="paradigm">
+        <div class="paradigm-text">
+            <div class="paradigm-number">PARADIGM 04</div>
+            <h2 class="paradigm-title">Dimensional Navigation</h2>
+            <div class="paradigm-shift">
+                <span class="paradigm-from">Style presets and dropdowns</span>
+                <span class="paradigm-arrow">→</span>
+                <span class="paradigm-to">Navigate meaning-space</span>
+            </div>
+            <p class="paradigm-desc">Not "cinematic" or "anime"—but sliders for abstract dimensions. Chaos↔Order. Ancient↔Future. Intimate↔Vast. Sacred↔Profane. You're navigating a continuous space of meaning, not selecting from a menu. Every position is valid. Every combination is new.</p>
+        </div>
+        <div class="paradigm-visual">
+            <div class="dimensions-demo">
+                <div class="dimension-axis">
+                    <span class="dimension-label">chaos</span>
+                    <div class="dimension-track" style="--from: #ef4444; --to: #3b82f6;">
+                        <div class="dimension-knob" style="left: 30%;"></div>
+                    </div>
+                    <span class="dimension-label-end">order</span>
+                </div>
+                <div class="dimension-axis">
+                    <span class="dimension-label">ancient</span>
+                    <div class="dimension-track" style="--from: #78350f; --to: #06b6d4;">
+                        <div class="dimension-knob" style="left: 70%;"></div>
+                    </div>
+                    <span class="dimension-label-end">future</span>
+                </div>
+                <div class="dimension-axis">
+                    <span class="dimension-label">intimate</span>
+                    <div class="dimension-track" style="--from: #be185d; --to: #1d4ed8;">
+                        <div class="dimension-knob" style="left: 55%;"></div>
+                    </div>
+                    <span class="dimension-label-end">vast</span>
+                </div>
+                <div class="dimension-axis">
+                    <span class="dimension-label">sacred</span>
+                    <div class="dimension-track" style="--from: #fbbf24; --to: #6b21a8;">
+                        <div class="dimension-knob" style="left: 40%;"></div>
+                    </div>
+                    <span class="dimension-label-end">profane</span>
+                </div>
+                <div class="dimension-result">your coordinate in meaning-space</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- PARADIGM 5: GRAMMAR -->
+    <div class="paradigm">
+        <div class="paradigm-text">
+            <div class="paradigm-number">PARADIGM 05</div>
+            <h2 class="paradigm-title">Visual Grammar</h2>
+            <div class="paradigm-shift">
+                <span class="paradigm-from">Free-form text prompts</span>
+                <span class="paradigm-arrow">→</span>
+                <span class="paradigm-to">Compositional syntax</span>
+            </div>
+            <p class="paradigm-desc">A structured language for images. Nouns (subjects), verbs (actions/states), adjectives (qualities), moods (atmospheres). Combine them like sentences. "Forest + dissolving + ethereal + melancholy." The grammar constrains and enables—like poetry's meter.</p>
+        </div>
+        <div class="paradigm-visual">
+            <div class="grammar-demo">
+                <div class="grammar-sentence">
+                    <span class="grammar-word noun">forest</span>
+                    <span class="grammar-word verb">dissolving</span>
+                    <span class="grammar-word adj">ethereal</span>
+                    <span class="grammar-word mood">melancholy</span>
+                </div>
+                <div class="grammar-legend">
+                    <span><div class="grammar-legend-dot" style="background: #2563eb;"></div> subject</span>
+                    <span><div class="grammar-legend-dot" style="background: #ea580c;"></div> action</span>
+                    <span><div class="grammar-legend-dot" style="background: #22c55e;"></div> quality</span>
+                    <span><div class="grammar-legend-dot" style="background: #d946ef;"></div> mood</span>
+                </div>
+                <div class="grammar-result"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- PARADIGM 6: LIVING -->
+    <div class="paradigm">
+        <div class="paradigm-text">
+            <div class="paradigm-number">PARADIGM 06</div>
+            <h2 class="paradigm-title">Living Images</h2>
+            <div class="paradigm-shift">
+                <span class="paradigm-from">Static file outputs</span>
+                <span class="paradigm-arrow">→</span>
+                <span class="paradigm-to">Images that age and evolve</span>
+            </div>
+            <p class="paradigm-desc">Images that remember. Every view changes them subtly. They develop patina through attention. Neglected images fade; loved images deepen. They age with you. An image from 2019 looks different than one from yesterday—not because it changed, but because it lived.</p>
+        </div>
+        <div class="paradigm-visual">
+            <div class="living-demo">
+                <div class="living-image">
+                    <div class="living-patina"></div>
+                </div>
+                <div class="living-stats">
+                    <div>
+                        <span class="living-stat-value">1,247</span>
+                        views
+                    </div>
+                    <div>
+                        <span class="living-stat-value">3:42</span>
+                        avg. gaze
+                    </div>
+                    <div>
+                        <span class="living-stat-value">89%</span>
+                        warmth drift
+                    </div>
+                </div>
+                <div class="living-age">CREATED 847 DAYS AGO • LAST EVOLVED 2H AGO</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- PARADIGM 7: DIALOGUE -->
+    <div class="paradigm">
+        <div class="paradigm-text">
+            <div class="paradigm-number">PARADIGM 07</div>
+            <h2 class="paradigm-title">The Image Speaks</h2>
+            <div class="paradigm-shift">
+                <span class="paradigm-from">You command, it obeys</span>
+                <span class="paradigm-arrow">→</span>
+                <span class="paradigm-to">Negotiate with the image</span>
+            </div>
+            <p class="paradigm-desc">The image has agency. It tells you what it wants to become. "I feel too heavy in the lower left." "What if I had more breath?" You respond, suggest, compromise. A collaboration between you and the emerging form. The image is not a product—it's a partner.</p>
+        </div>
+        <div class="paradigm-visual">
+            <div class="dialogue-demo">
+                <div class="dialogue-image"></div>
+                <div class="dialogue-speech">
+                    <p>"I'm feeling constrained. What if I expanded beyond these edges? I sense there's more of me just out of frame."</p>
+                </div>
+                <div class="dialogue-response">
+                    <button class="dialogue-option">Yes, expand</button>
+                    <button class="dialogue-option">Stay contained</button>
+                    <button class="dialogue-option">Tell me more</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- PARADIGM 8: SENSORY -->
+    <div class="paradigm">
+        <div class="paradigm-text">
+            <div class="paradigm-number">PARADIGM 08</div>
+            <h2 class="paradigm-title">Synaesthetic Input</h2>
+            <div class="paradigm-shift">
+                <span class="paradigm-from">Type words to describe</span>
+                <span class="paradigm-arrow">→</span>
+                <span class="paradigm-to">Hum, tap, gesture, breathe</span>
+            </div>
+            <p class="paradigm-desc">Why limit input to text? Hum a melody—its rhythm and tone become visual rhythm and color. Tap a beat—it becomes compositional structure. Draw a gesture—it becomes the image's energy. Cross-modal translation. Your body already knows what it wants to see.</p>
+        </div>
+        <div class="paradigm-visual">
+            <div class="sensory-demo">
+                <div class="sensory-inputs">
+                    <div class="sensory-input">
+                        <div class="sensory-circle">🎵</div>
+                        <div class="sensory-label">HUM</div>
+                    </div>
+                    <div class="sensory-input">
+                        <div class="sensory-circle active">👆</div>
+                        <div class="sensory-label">TAP</div>
+                    </div>
+                    <div class="sensory-input">
+                        <div class="sensory-circle">✋</div>
+                        <div class="sensory-label">GESTURE</div>
+                    </div>
+                </div>
+                <div class="sensory-wave">
+                    <div class="sensory-bar"></div>
+                    <div class="sensory-bar"></div>
+                    <div class="sensory-bar"></div>
+                    <div class="sensory-bar"></div>
+                    <div class="sensory-bar"></div>
+                    <div class="sensory-bar"></div>
+                    <div class="sensory-bar"></div>
+                </div>
+                <div class="sensory-arrow">↓</div>
+                <div class="sensory-result"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- PARADIGM 9: CONSTRAINT -->
+    <div class="paradigm">
+        <div class="paradigm-text">
+            <div class="paradigm-number">PARADIGM 09</div>
+            <h2 class="paradigm-title">Constraint Poetry</h2>
+            <div class="paradigm-shift">
+                <span class="paradigm-from">Describe the content</span>
+                <span class="paradigm-arrow">→</span>
+                <span class="paradigm-to">Define the rules</span>
+            </div>
+            <p class="paradigm-desc">Don't say what—say the boundaries. "Exactly 3 elements. Must evoke nostalgia. Must be asymmetrical. No faces." The constraints define a possibility space; the AI fills it. Like a sonnet's 14 lines: limitation as liberation. You design the container; surprise fills it.</p>
+        </div>
+        <div class="paradigm-visual">
+            <div class="constraint-demo">
+                <div class="constraint-rules">
+                    <div class="constraint-rule">
+                        <div class="constraint-icon">3</div>
+                        <span class="constraint-text">Exactly three elements</span>
+                        <div class="constraint-toggle active"></div>
+                    </div>
+                    <div class="constraint-rule">
+                        <div class="constraint-icon">◐</div>
+                        <span class="constraint-text">Asymmetrical balance</span>
+                        <div class="constraint-toggle active"></div>
+                    </div>
+                    <div class="constraint-rule">
+                        <div class="constraint-icon">♡</div>
+                        <span class="constraint-text">Evokes nostalgia</span>
+                        <div class="constraint-toggle active"></div>
+                    </div>
+                    <div class="constraint-rule">
+                        <div class="constraint-icon">⊘</div>
+                        <span class="constraint-text">No human figures</span>
+                        <div class="constraint-toggle"></div>
+                    </div>
+                </div>
+                <div class="constraint-result">awaiting constraints...</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        <h2>The prompt is not the only door.</h2>
+        <p>Each paradigm reimagines not just the interface, but the relationship between human intent and machine creation. Some may feel strange. That strangeness is the point—tags felt strange before they became obvious.</p>
+    </div>
+
+    <script>
+        // Generate the subtraction grid
+        const grid = document.getElementById('subtractGrid');
+        const colors = ['#4c1d95', '#1e40af', '#065f46', '#7c2d12', '#1e3a8a', '#312e81', '#064e3b', '#713f12'];
+        for (let i = 0; i < 100; i++) {
+            const cell = document.createElement('div');
+            cell.className = 'subtract-cell';
+            cell.style.background = colors[Math.floor(Math.random() * colors.length)];
+            cell.dataset.tags = ['blue', 'organic', 'busy'][Math.floor(Math.random() * 3)];
+            grid.appendChild(cell);
+        }
+
+        function removeTag(tag) {
+            document.querySelectorAll('.subtract-cell').forEach(cell => {
+                if (cell.dataset.tags === tag) {
+                    cell.classList.add('removed');
+                }
+            });
+        }
+    </script>
+
+</body>
+</html>
